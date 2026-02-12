@@ -133,7 +133,7 @@ Use Tab 5 to check for:
 For detailed information on each phase, file structure, and advanced features, see the complete documentation above.
 
 ---
-
+```
 📅 09:00 - Start
 ├─ Open Auto Mode
 ├─ Select folders and files
@@ -162,6 +162,7 @@ For detailed information on each phase, file structure, and advanced features, s
 │
 📅 10:42 - Complete!
 └─ Mod ready at output/Updated_Translation/
+```
 
 **Made with ❤️ for the Stellaris Modding Community**
 
