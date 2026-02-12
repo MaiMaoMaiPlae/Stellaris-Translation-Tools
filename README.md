@@ -134,4 +134,35 @@ For detailed information on each phase, file structure, and advanced features, s
 
 ---
 
+📅 09:00 - Start
+├─ Open Auto Mode
+├─ Select folders and files
+├─ Click "Start Auto (Phase 1)"
+│
+📅 09:03 - Phase 1 Complete
+├─ Review Stellaris_Dict_V.4.2.4.txt
+├─ Remove 20 incorrect words
+├─ Click "I Confirm"
+│
+📅 09:06 - Click "Continue (Phase 2)"
+│
+📅 09:08 - Phase 2 Complete
+├─ Send file to ChatGPT for translation
+│
+📅 10:30 - ChatGPT translation complete
+├─ Click "Browse & Import"
+├─ Select translated file
+├─ ❌ Validation fail! 15 lines with errors
+├─ Fix Error_line.txt
+├─ Click "I Confirm - Fixed"
+├─ ✅ Validation pass!
+├─ Click "I Confirm" (Translation confirmation)
+│
+📅 10:35 - Click "Continue (Phase 3)"
+│
+📅 10:42 - Complete!
+└─ Mod ready at output/Updated_Translation/
+
 **Made with ❤️ for the Stellaris Modding Community**
+
+
