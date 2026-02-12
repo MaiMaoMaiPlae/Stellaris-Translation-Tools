@@ -12,7 +12,7 @@
 
 ## Quick Start
 1. Select folders (En Old.V, Translate Old.V, EN New.V)
-2. Select Dict.txt file
+2. Select Stellaris_Dict_V.4.2.4.txt file
 3. Click "Start Auto" → Follow confirmation dialogs
 4. Done! Get your translated mod in `output/`
 
