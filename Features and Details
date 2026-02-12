@@ -1,0 +1,235 @@
+
+🤖 Auto Mode - Features and Details
+📋 Overview
+Auto Mode is an automated system designed for complete Stellaris mod translation workflow. It combines all 5 tabs into 3 main phases, significantly reducing time and complexity while providing automatic validation.
+
+✨ Key Benefits
+1. Massive Time Saving
+Manual Mode: 8-10 steps, 30-60 minutes (excluding translation time)
+Auto Mode: 3 steps, click Auto 3 times + 2 confirmations
+
+2. Error Prevention
+✅ Automatic input file validation
+✅ Symbol count validation (𓁳 and \n) prevents translation errors
+✅ Line count verification before merge
+✅ Automatic backup of critical files
+
+3. State Persistence
+💾 Auto-saves progress to tool_state.json
+🔄 Close and reopen program, continue instantly
+📍 Remembers current phase and all file paths
+⏸️ Pause and resume anytime
+
+4. User Friendly
+🎯 Clear UI with status display for every step
+📊 Real-time progress bars
+💬 Detailed confirmation dialogs explaining next steps
+🔔 Notifications when user input needed
+
+5. Flexible
+⏯️ Pause at any point, resume later
+🔁 Easy reset, start fresh anytime
+📂 All intermediate files saved for inspection
+
+
+🔄 3-Phase Workflow
+Phase 1: Extract & Dict
+What it does:
+Extracts new/updated text from new game version
+Compares with old mod version
+Creates clean_for_translation.txt (only lines that need translation)
+Runs Auto-Extract Dict (finds game codes to preserve, e.g., [planet_type], $LEADER$)
+
+Output:
+clean_for_translation.txt → File to translate
+Dict.txt → Auto-updated, sorted by length
+
+Waits for user:
+✅ Review Dict.txt (remove errors, add needed words)
+✅ Click Confirm when ready
+
+Time: 2-5 minutes (depends on file size)
+Phase 2: Prepare for Translation
+What it does:
+Clean & Sort Dict (remove duplicates, sort by length)
+Replace Dict words with Unicode symbol (𓁳)
+Remove duplicate lines (reduces lines to translate)
+Creates _unique.txt and _unique_Backup.txt
+
+Output:
+converted_text_XXXXXX_unique.txt → Send to AI for translation
+converted_text_XXXXXX_unique_Backup.txt → For validation
+
+Waits for user:
+🤖 Send _unique.txt to AI for translation (ChatGPT, Claude, Gemini, etc.)
+📥 Import translated file via Tab 4 (or in Confirmation Dialog)
+✅ Click Confirm when translation complete and imported
+
+Time: 1-3 minutes (excluding translation time)
+Example line reduction:
+Original: 5,000 lines
+After deduplication: 3,200 lines (36% savings)
+
+
+Phase 3: Merge & Complete
+What it does:
+Restore translations to duplicate lines
+Replace Unicode symbol (𓁳) back to original game codes
+Merge translations back into game file structure
+Creates Mod folder Updated_Thai_Translation
+
+Output:
+📁 output/Updated_Thai_Translation/ → Ready-to-use mod
+✅ Can be used in game immediately
+
+Time: 3-8 minutes (depends on number of files)
+🛡️ Symbol Validation System
+Why is it needed?
+Stellaris uses special symbols for display:
+
+𓁳 = Variables that must be preserved
+\n = Line breaks
+
+If AI translation loses, adds, or changes the count → Game will display incorrectly
+How does it work?
+
+Auto-Check when importing translated file
+Counts 𓁳 and \n in each line
+Compares with original file
+If mismatch:
+
+Creates Error_line.txt (lines with errors)
+Creates Original_Compare_Line.txt (original lines for reference)
+Creates Error_line_mapping.txt (line positions)
+Shows Error Dialog with instructions
+
+
+User fixes Error_line.txt to match original
+Click Confirm → System auto-replaces
+Re-validates until 100% correct
+Example:
+
+✅ Correct:
+Original: "Planet 𓁳 has 𓁳 resources\nPopulation: 𓁳"
+Translate: "ดาวเคราะห์ 𓁳 มีทรัพยากร 𓁳\nประชากร: 𓁳"
+→ 𓁳 = 3, \n = 1 (match!)
+
+❌ Wrong:
+Original: "Planet 𓁳 has 𓁳 resources\nPopulation: 𓁳"
+Translate: "ดาวเคราะห์มีทรัพยากร\nประชากร: 𓁳"
+→ 𓁳 = 1, \n = 1 (mismatch! should be 3)
+
+📂 Auto-Generated Files
+
+Phase 1:
+
+output/
+├── translation_map.json          (Translation map - critical!)
+├── clean_for_translation.txt     (Text to translate)
+└── logs/                          (Log files)
+
+Phase 2:
+
+output/
+├── converted_text_XXXXXX.txt                (After Dict replace)
+├── converted_text_XXXXXX_unique.txt         (Send to AI)
+├── converted_text_XXXXXX_unique_Backup.txt  (For validation)
+└── converted_text_XXXXXX_mapping.txt        (Duplicate line map)
+
+Phase 3:
+
+output/
+├── converted_text_XXXXXX_final.txt          (After restore duplicates)
+├── restored_text_XXXXXX.txt                 (After restore Unicode)
+└── Updated_Thai_Translation/                (Complete mod)
+    └── localisation/
+        └── [game file structure]
+
+Validation Files (if errors occur):
+
+output/
+├── Error_line.txt                 (Lines with errors - fix here)
+├── Original_Compare_Line.txt      (Original lines - for comparison)
+└── Error_line_mapping.txt         (Line positions)
+
+🎯 Use Cases
+1. Game Updates to New Version
+Stellaris releases new DLC
+2,000-10,000 new lines of text
+Use Auto Mode → Complete in 1-2 hours (including translation)
+
+2. Create Brand New Translation Mod
+Total 50,000+ lines
+Use Auto Mode → Processing complete in 20-30 minutes
+Translation with AI → 2-4 hours (depends on AI)
+
+3. Fix Old Mod with Issues
+Old mod incompatible with new game version
+Use Phase 1 → Find changed text
+Use Phase 2-3 → Merge back
+
+
+💡 Usage Tips
+1. Prepare Files Properly
+Recommended structure:
+Project/
+├── OldV/          (Old game version - English)
+├── ThOldV/        (Old mod version - Thai)
+├── NewV/          (New game version - English)
+├── Dict.txt       (Create empty or use existing)
+└── output/        (Auto-created)
+
+2. Review Dict.txt Carefully
+Remove:
+-" (quote marks)
+-Common English words (the, and, is)
+-Non-game-code words
+
+Keep:
+-[planet_class_xxx]
+-$VARIABLE$
+-§Y, §!, §R (color codes)
+-£energy£, £minerals£ (icon codes)
+
+3. Translate with AI Correctly
+Recommended prompt:
+Translate this file from English to Thai:
+- Keep ALL 𓁳 symbols, don't delete or add
+- Keep ALL \n symbols, don't delete or add
+- Only translate English text
+- Line count must remain the same
+
+4. Use Tab 5 for Post-Merge Checking
+-Find remaining English text
+-Find Thai with encoding issues
+-Find missing or misplaced symbols
+
+⚡ Performance							
+Processing Speed:									
+File Count	Line Count	Phase 1	Phase 2	  Phase 3	  Total
+100	        5,000	        30s	      15s	      45s	   1.5m
+500	        25,000	       2m	      45s	      3m	  5.75m
+1,000	      50,000	       4m	     1.5m	      6m	  11.5m
+2,000	      100,000	       8m	        3m	    12m	    23m
+Note: Excludes user review time and AI translation time
+Time Savings:
+-Without Auto: 30-60 minutes for manual steps
+-With Auto: 5-15 minutes for all 3 phases
+-Savings: 50-75% of working time
+
+🔒 Safety Features
+1. Automatic Backups
+-Dict.txt → Dict_backup_YYYYMMDD_HHMMSS.txt
+-_unique.txt → _unique_Backup.txt
+-Before error fix → _before_fix_YYYYMMDD_HHMMSS.txt
+
+2. Never Modifies Original Files
+-English Old.V, Translated Old.V, English New.V → Read-only
+-All outputs go to output/
+
+3. Rollback Capable
+-All intermediate files saved
+-Mapping files for reverse operations
+-Click Reset → Start fresh instantly
+
+
